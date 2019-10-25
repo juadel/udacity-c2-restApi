@@ -1,7 +1,8 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, response } from 'express';
 import { FeedItem } from '../models/FeedItem';
 import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
+import { get, request } from 'https';
 
 const router: Router = Router();
 
@@ -104,5 +105,35 @@ router.post('/',
     saved_item.url = AWS.getGetSignedUrl(saved_item.url);
     res.status(201).send(saved_item);
 });
+
+router.get('/filter/filter', 
+    requireAuth,
+    async (req:Request, res: Response) =>{
+        let img_url = req.query;
+        let newImage : string;
+        const https = require('http');
+        console.log('http://localhost:8082/img_url',req.query);
+
+        https.get('http://localhost:8082/filteredimage?image_url='+img_url, (resp :Response) => {
+          let data :string = '';
+          console.log('Pass get request')
+          // A chunk of data has been recieved.
+          resp.on('data', (chunk:string) => {
+            data += chunk;
+          });
+        
+          // The whole response has been received. Print out the result.
+          resp.on('end', () => {
+            newImage = data;
+            return res.status(200).sendFile(newImage);
+          });
+        
+        }).on("error", (err:Error) => {
+          console.log("Error: " + err.message);
+        });
+
+        
+
+    });
 
 export const FeedRouter: Router = router;
