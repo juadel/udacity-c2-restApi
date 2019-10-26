@@ -106,25 +106,27 @@ router.post('/',
     res.status(201).send(saved_item);
 });
 
-router.get('/filter/filter', 
+/*router.get('/filter/filter', 
     requireAuth,
     async (req:Request, res: Response) =>{
-        let img_url = req.query;
-        let newImage : string;
+        let img_url = req.params;
+        
         const https = require('http');
-        console.log('http://localhost:8082/img_url',req.query);
+        console.log(img_url);
 
-        https.get('http://localhost:8082/filteredimage?image_url='+img_url, (resp :Response) => {
-          let data :string = '';
+        https.get('http://localhost:8082/filteredimage?image_url=https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg', (resp :Response) => {
+          let data = '';
           console.log('Pass get request')
           // A chunk of data has been recieved.
-          resp.on('data', (chunk:string) => {
+          resp.on('data', (chunk) => {
             data += chunk;
+            //console.log(data);
           });
         
-          // The whole response has been received. Print out the result.
+          // The whole response has been received. Print out the result. 
           resp.on('end', () => {
-            newImage = data;
+            let newImage = data;
+            //console.log(newImage);
             return res.status(200).sendFile(newImage);
           });
         
@@ -134,6 +136,9 @@ router.get('/filter/filter',
 
         
 
-    });
+    });*/
+
+    
+
 
 export const FeedRouter: Router = router;
