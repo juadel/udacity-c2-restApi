@@ -109,14 +109,14 @@ router.post('/',
 /*router.get('/filter/filter', 
     requireAuth,
     async (req:Request, res: Response) =>{
-        let img_url = req.params;
+        let {img_url} = req.params;
         
         const https = require('http');
         console.log(img_url);
 
-        https.get('http://localhost:8082/filteredimage?image_url=https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg', (resp :Response) => {
+        https.get('http://localhost:8082/filteredimage?image_url=',${image_url}, (resp :Response) => {
           let data = '';
-          console.log('Pass get request')
+          console.log('Passed get request')
           // A chunk of data has been recieved.
           resp.on('data', (chunk) => {
             data += chunk;
