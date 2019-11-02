@@ -5,6 +5,9 @@ import * as AWS from '../../../../aws';
 import { get, request } from 'https';
 
 const router: Router = Router();
+/* CHAI use*/
+var chai = require('chai') , chaiHttp = require('chai-http');
+chai.use(chaiHttp);
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
@@ -106,37 +109,21 @@ router.post('/',
     res.status(201).send(saved_item);
 });
 
-/*router.get('/filter/filter', 
+router.get('/filter/filter', 
     requireAuth,
     async (req:Request, res: Response) =>{
-        let {img_url} = req.params;
+        let {img_url} = req.query;
         
-        const https = require('http');
-        console.log(img_url);
+        chai-http.request('http>//localhost:8082').get('/filteredimage?img_url=',{img_url});
 
-        https.get('http://localhost:8082/filteredimage?image_url=',${image_url}, (resp :Response) => {
-          let data = '';
-          console.log('Passed get request')
-          // A chunk of data has been recieved.
-          resp.on('data', (chunk) => {
-            data += chunk;
-            //console.log(data);
-          });
+
+          
         
-          // The whole response has been received. Print out the result. 
-          resp.on('end', () => {
-            let newImage = data;
-            //console.log(newImage);
-            return res.status(200).sendFile(newImage);
-          });
         
-        }).on("error", (err:Error) => {
-          console.log("Error: " + err.message);
-        });
 
         
 
-    });*/
+    });
 
     
 
