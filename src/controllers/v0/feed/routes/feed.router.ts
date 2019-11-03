@@ -6,8 +6,7 @@ import { get, request } from 'https';
 
 const router: Router = Router();
 /* CHAI use*/
-var chai = require('chai') , chaiHttp = require('chai-http');
-chai.use(chaiHttp);
+
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
@@ -113,8 +112,26 @@ router.get('/filter/filter',
     requireAuth,
     async (req:Request, res: Response) =>{
         let {img_url} = req.query;
+        //Using CHAI-HTTP to do a get request to the filteredimage server 
+        var chai = require('chai') , chaiHttp = require('chai-http');
+        chai.use(chaiHttp);
+        var expect = chai.expect;
+        var img :Response ;
+        console.log(img_url)
+        await chai.request('http://localhost:8082').get('/filteredimage').query({image_url: img_url})
+        .then(function (res:Response){
+          //expect(err).to.be.null;
+          expect(res).to.have.status(200);
+         //filtered image server responde ok 
+
+        }).catch(function(err:Error){
+          throw err;
+
+        });
+        console.log(img)
+        res.status(200).send(img);
+        //communication iss succesful but not file transfer has been completed to the end user.
         
-        chai-http.request('http>//localhost:8082').get('/filteredimage?img_url=',{img_url});
 
 
           
