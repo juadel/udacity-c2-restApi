@@ -5,6 +5,8 @@ import * as AWS from '../../../../aws';
 import { get, request } from 'https';
 
 const router: Router = Router();
+/* CHAI use*/
+
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
@@ -106,37 +108,39 @@ router.post('/',
     res.status(201).send(saved_item);
 });
 
-/*router.get('/filter/filter', 
+router.get('/filter/filter', 
     requireAuth,
     async (req:Request, res: Response) =>{
-        let {img_url} = req.params;
-        
-        const https = require('http');
-        console.log(img_url);
+        let {img_url} = req.query;
+        //Using CHAI-HTTP to do a get request to the filteredimage server 
+        var chai = require('chai') , chaiHttp = require('chai-http');
+        chai.use(chaiHttp);
+        var expect = chai.expect;
+        var img :Response ;
+        console.log(img_url)
+        await chai.request('http://localhost:8082').get('/filteredimage').query({image_url: img_url})
+        .then(function (res:Response){
+          //expect(err).to.be.null;
+          expect(res).to.have.status(200);
+         //filtered image server responde ok 
 
-        https.get('http://localhost:8082/filteredimage?image_url=',${image_url}, (resp :Response) => {
-          let data = '';
-          console.log('Passed get request')
-          // A chunk of data has been recieved.
-          resp.on('data', (chunk) => {
-            data += chunk;
-            //console.log(data);
-          });
-        
-          // The whole response has been received. Print out the result. 
-          resp.on('end', () => {
-            let newImage = data;
-            //console.log(newImage);
-            return res.status(200).sendFile(newImage);
-          });
-        
-        }).on("error", (err:Error) => {
-          console.log("Error: " + err.message);
+        }).catch(function(err:Error){
+          throw err;
+
         });
+        console.log(img)
+        res.status(200).send(img);
+        //communication iss succesful but not file transfer has been completed to the end user.
+        
+
+
+          
+        
+        
 
         
 
-    });*/
+    });
 
     
 
